@@ -1,7 +1,8 @@
-import { AxiosProxyConfig } from 'axios';
-import { httpRequest, buildQueryString, removeEmptyValue } from '../helpers/utils';
+import {AxiosProxyConfig} from 'axios';
+import {buildQueryString, httpRequest, removeEmptyValue} from '../helpers/utils';
 import * as crypto from 'crypto';
 import {
+    mixinFutures,
     mixinMargin,
     mixinMarket,
     mixinSimpleEarn,
@@ -10,13 +11,19 @@ import {
     mixinTrade,
     mixinWallet,
 } from '../modules/restful/index';
-import { mixinWsAccount, mixinWsMarket, mixinWsTrade, mixinWsUserData, WebsocketBase } from '../modules/websocket/websocketAPI';
-import { mixinWsStream } from '../modules/websocket/websocketStream/stream';
-import { WebsocketCallbacks, WebsocketConnection } from '../modules/websocket/websocketBase/types';
-import { SpotOptions, WebsocketAPIOptions } from './types';
+import {
+    mixinWsAccount,
+    mixinWsMarket,
+    mixinWsTrade,
+    mixinWsUserData,
+    WebsocketBase
+} from '../modules/websocket/websocketAPI';
+import {mixinWsStream} from '../modules/websocket/websocketStream/stream';
+import {WebsocketCallbacks, WebsocketConnection} from '../modules/websocket/websocketBase/types';
+import {SpotOptions, WebsocketAPIOptions} from './types';
 
 
-export const SpotBase = mixinMargin(mixinMarket(mixinSimpleEarn(mixinStream(mixinSubAccount(mixinTrade(mixinWallet(class {
+export const SpotBase = mixinFutures(mixinMargin(mixinMarket(mixinSimpleEarn(mixinStream(mixinSubAccount(mixinTrade(mixinWallet(class {
     apiKey: string;
     apiSecret: string;
     baseURL: string;
@@ -86,7 +93,7 @@ export const SpotBase = mixinMargin(mixinMarket(mixinSimpleEarn(mixinStream(mixi
         }
         return `${path}?${params}&signature=${signature}`;
     }
-})))))));
+}))))))));
 
 export const WebsocketFeaturesBase = mixinWsAccount(mixinWsMarket(mixinWsTrade(mixinWsUserData(WebsocketBase(class {
     apiKey: string;
